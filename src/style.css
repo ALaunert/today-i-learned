@@ -26,6 +26,7 @@ h1 {
   align-items: center;
   justify-content: space-between;
 }
+
 .message {
   text-align: center;
   text-transform: uppercase;
@@ -220,9 +221,6 @@ ul {
 }
 
 @media (max-width: 1000px) {
-  body {
-    /* padding: 32px 48px; */
-  }
   .fact-form {
     flex-direction: column;
     align-items: stretch;
@@ -230,5 +228,24 @@ ul {
   .fact-form input,
   .fact-form select {
     width: auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .header {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .btn-open {
+    width: 100%;
+  }
+  .logo {
+    width: 100%;
+    justify-content: space-between;
+  }
+  h1 {
+    font-size: 42px;
+    width: min-content;
   }
 }
