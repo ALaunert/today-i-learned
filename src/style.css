@@ -175,6 +175,9 @@ ul {
   transition: 0.3s;
 }
 
+.form-error-message {
+}
+
 .vote-buttons button:hover {
   background-color: #292524;
 }
@@ -190,7 +193,6 @@ ul {
   gap: 16px;
   border-radius: 16px;
 }
-
 .fact-form input,
 .fact-form select {
   width: 250px;

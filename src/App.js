@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import supabase from "./supabase";
 import "./style.css";
+import { Toaster, toast } from "react-hot-toast";
 
 const CATEGORIES = [
   { name: "technology", color: "#3b82f6" },
@@ -43,6 +44,7 @@ function App() {
 
   return (
     <>
+      <Toaster />
       <Header setShowForm={setShowForm} showForm={showForm} />
       {showForm ? (
         <NewFactForm setFacts={setFacts} setShowForm={setShowForm} />
@@ -98,20 +100,25 @@ function NewFactForm({ setFacts, setShowForm }) {
   const [text, setText] = useState("");
   const [source, setSource] = useState("");
   const [category, setCategory] = useState("");
+
   const textLength = text.length;
   const [isUploading, setIsUploading] = useState(false);
-
   async function handleSubmit(e) {
     //prevent the reload
     e.preventDefault();
     //Check if the data is valid
-    if (
-      text &&
-      isValidHttpUrl(source) &&
-      source &&
-      category &&
-      textLength <= 200
-    ) {
+
+    if (!text || textLength > 200) {
+      toast.error("Fact field must not be empty ");
+      return;
+    }
+    if (!isValidHttpUrl(source) || !source) {
+      toast.error(
+        "Source field must not be empty, and the source must start with http://"
+      );
+      return;
+    }
+    if (category) {
       //upload fact to supa and receive new fact
       setIsUploading(true);
       const { data: newFact, error } = await supabase
@@ -127,6 +134,10 @@ function NewFactForm({ setFacts, setShowForm }) {
       setCategory("");
       //close the form
       setShowForm(false);
+      toast.success("The fact has been successfully uploaded!");
+    } else {
+      toast.error("You need to chose category");
+      return;
     }
   }
 
@@ -241,20 +252,6 @@ function Fact({ fact, setFacts }) {
     }
     setIsClicked(!isClicked);
   }
-
-  // async function handleVote(columnName) {
-  //   setIsUpdating(true);
-  //   const { data: updatedFact, error } = await supabase
-  //     .from("facts")
-  //     .update({ [columnName]: fact[columnName] + 1 })
-  //     .eq("id", fact.id)
-  //     .select();
-  //   setIsUpdating(false);
-  //   if (!error)
-  //     setFacts((facts) =>
-  //       facts.map((f) => (f.id === fact.id ? updatedFact[0] : f))
-  //     );
-  // }
 
   return (
     <li className="fact">
